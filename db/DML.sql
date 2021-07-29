@@ -1,5 +1,5 @@
 create table if not exists user(
-    id int(8) auto_increment
+    id int(10) auto_increment
     primary key,
     username varchar(255) default '' not null comment '用户名',
     password varchar(255) default '' not null comment '密码',
