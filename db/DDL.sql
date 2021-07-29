@@ -1,6 +1,6 @@
 show VARIABLES like '%max_allowed_packet%';
 show VARIABLES like '%cache%';
-set global max_allowed_packet = 20*1024*1024;
+set global max_allowed_packet = 20*1024*10246;
 set global query_cache_size = 0;
 
 create DATABASE if not exists vhr collate utf8_general_ci;
