@@ -36,11 +36,19 @@ spring:
         max-idle: 20
         max-wait:
         min-idle: 1
-        max-active : 20
+        max-active: 20
 
 mybatis:
   mapper-locations: classpath:mapper/*Mapper.xml
   type-aliases-package: com.wyb.cache.dao.model
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+logging:
+  level:
+    com.wyb.cache: debug
+
 
 #pagehelper分页插件
 pagehelper:
