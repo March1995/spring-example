@@ -39,10 +39,29 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <spring.boot.verion>2.0.8.RELEASE</spring.boot.verion>
+    <spring.verion>5.0.12.RELEASE</spring.verion>
+    <mapstruct.version>1.4.2.Final</mapstruct.version>
   </properties>
 
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${spring.boot.verion}</version>
+        <type>pom</type>
+        <scope>provided</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-framework-bom</artifactId>
+        <version>${spring.verion}</version>
+        <type>pom</type>
+        <scope>provided</scope>
+      </dependency>
+
+
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter</artifactId>
@@ -66,7 +85,6 @@
         <artifactId>spring-boot-starter-web</artifactId>
         <version>${spring.boot.verion}</version>
       </dependency>
-
 
       <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -301,6 +319,17 @@
         <version>3.4.0</version>
       </dependency>
 
+      <dependency>
+        <groupId>org.mapstruct</groupId>
+        <artifactId>mapstruct</artifactId>
+        <version>${mapstruct.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.mapstruct</groupId>
+        <artifactId>mapstruct-processor</artifactId>
+        <version>${mapstruct.version}</version>
+      </dependency>
+
     </dependencies>
   </dependencyManagement>
 
@@ -311,6 +340,13 @@
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-maven-plugin</artifactId>
           <version>${spring.boot.verion}</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>repackage</goal>
+              </goals>
+            </execution>
+          </executions>
         </plugin>
 
         <plugin>
