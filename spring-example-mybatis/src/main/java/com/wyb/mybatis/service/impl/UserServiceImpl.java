@@ -45,4 +45,10 @@ public class UserServiceImpl extends BaseService<UserDo> implements UserService 
 
 
     }
+
+    @Override
+    @Transactional
+    public void updateAgePlusOne() {
+        userDoMapper.updateAgePlusOne(1);
+    }
 }

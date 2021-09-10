@@ -64,6 +64,11 @@ public class UserController {
 
     }
 
+    @GetMapping("/updateNum")
+    public void updateNum() {
+        userService.updateAgePlusOne();
+    }
+
     @PostMapping("/login")
     public boolean login(@RequestParam("username") String name,
                          @RequestParam("pwd") String pwd) {

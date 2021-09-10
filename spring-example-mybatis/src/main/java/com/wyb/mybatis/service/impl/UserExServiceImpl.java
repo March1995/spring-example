@@ -5,26 +5,24 @@
  */
 package com.wyb.mybatis.service.impl;
 
-import javax.annotation.Resource;
-
-import com.wyb.mybatis.service.UserService;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.github.pagehelper.PageInfo;
 import com.wyb.mybatis.dao.mapper.UserExDoMapper;
 import com.wyb.mybatis.dao.model.UserDo;
 import com.wyb.mybatis.dao.model.UserExDo;
 import com.wyb.mybatis.service.UserExService;
-
+import com.wyb.mybatis.service.UserService;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
+
+import javax.annotation.Resource;
 
 /**
  * @author Marcher丶
  * @version $$ Revision: 1.0 $$, $$ Date: 2021/3/23 18:59 $$
  */
 @Service("userExService")
-public class UserExServiceImpl extends BaseService<UserExDo>implements UserExService {
+public class UserExServiceImpl extends BaseService<UserExDo> implements UserExService {
 
     @Resource
     UserExDoMapper userExDoMapper;

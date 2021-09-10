@@ -10,4 +10,6 @@ public interface UserService extends IService<UserDo> {
     String selectUserNameById(Integer id);
 
     void update(UserDo userDo);
+
+    void updateAgePlusOne();
 }

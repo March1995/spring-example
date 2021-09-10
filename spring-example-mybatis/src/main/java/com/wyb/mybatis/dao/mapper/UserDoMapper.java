@@ -5,4 +5,6 @@ import com.wyb.mybatis.dao.model.UserDo;
 
 public interface UserDoMapper extends BaseMapper<UserDo> {
     String selectUserNameById(Integer id);
+
+    int updateAgePlusOne(Integer id);
 }

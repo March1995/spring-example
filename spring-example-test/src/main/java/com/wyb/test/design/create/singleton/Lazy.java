@@ -13,7 +13,7 @@ public class Lazy {
     }
 
     public Lazy getInstance() {
-        if (null != lazy) {
+        if (null == lazy) {
             lazy = new Lazy();
         }
         return lazy;

@@ -19,4 +19,7 @@
     select username from `user` where id = #{id}
   </select>
 
+   <update id="updateAgePlusOne" parameterType="integer">
+    update `user` set age= age+1 where id = #{id} and age <![CDATA[<]]> phone
+  </update>
 </mapper>
