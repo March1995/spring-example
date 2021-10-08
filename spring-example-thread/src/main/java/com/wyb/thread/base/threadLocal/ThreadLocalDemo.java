@@ -20,6 +20,15 @@ public class ThreadLocalDemo {
         return seqNum.get();
     }
 
+    //存放线程变量
+    private static ThreadLocal<Integer> seqNum1 = new ThreadLocal<Integer>() {
+        @Override
+        public Integer initialValue() {
+            return 0;
+        }
+    };//①通过匿名内部类覆盖ThreadLocal的initialValue()方法，指定初始值
+
+
     private static class TestClient extends Thread {
 
         private ThreadLocalDemo sn;
@@ -31,10 +40,12 @@ public class ThreadLocalDemo {
         @Override
         public void run() {
             for (int i = 0; i < 3; i++) {
+                int a = seqNum1.get() + 1;
+                seqNum1.set(a);
                 //④每个线程打出3个序列值
                 System.out.println("thread[" +
                         Thread.currentThread().getName() + "]sn[" +
-                        sn.getNextNum() + "]");
+                        a + "]");
             }
         }
     }
@@ -49,10 +60,12 @@ public class ThreadLocalDemo {
 
         public void run() {
             for (int i = 0; i < 5; i++) {
+                int a = seqNum1.get() + 1;
+                seqNum1.set(a);
                 //④每个线程打出3个序列值
                 System.out.println("thread[" +
                         Thread.currentThread().getName() + "]sn[" +
-                        sn.getNextNum() + "]");
+                        a + "]");
             }
         }
     }

@@ -4,18 +4,21 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Marcher丶
  * 单例
  */
 @SpringBootApplication
+@Controller
 public class Singleton {
 
 
@@ -68,5 +71,34 @@ public class Singleton {
         ApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(sc);
         ScopeBean requestBean = (ScopeBean) ctx.getBean("requestBean");
         System.out.println("test1 requestBean内存地址：" + System.identityHashCode(requestBean));
+    }
+
+    @GetMapping("/addCookie")
+    public void addCookie(HttpServletRequest request, HttpServletResponse response) {
+        String domain = "dev.kehou.com";
+        String name = "name";
+        String value = "value";
+        CookieUtil.addCookieByName(request, response, domain, name, value, 30 * 10);
+        value = CookieUtil.getCookieValueByName(request, name);
+        System.out.println(value);
+//        String
+    }
+
+    @GetMapping("/getCookie")
+    public void getCookie(HttpServletRequest request, HttpServletResponse response) {
+        String name = "name";
+        String value = CookieUtil.getCookieValueByName(request, name);
+        System.out.println(value);
+    }
+
+    @GetMapping("/updateCookie")
+    public void updateCookie(HttpServletRequest request, HttpServletResponse response) {
+        String name = "name";
+        String value = "valueUpdate";
+
+        String domain = "dev.kehou.com";
+        CookieUtil.addCookieByName(request, response, domain, name, value, 30 * 10);
+        value = CookieUtil.getCookieValueByName(request, name);
+        System.out.println(value);
     }
 }

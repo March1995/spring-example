@@ -5,6 +5,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
+ * https://juejin.cn/post/7007360668735602701?utm_source=gold_browser_extension#heading-3
+ *
  * @author Marcher丶
  * <p>
  * CountDownLatch （倒计时器）
