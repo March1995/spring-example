@@ -1,16 +1,15 @@
 package com.wyb.mybatis.multidatasource.service.impl;
 
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.wyb.mybatis.multidatasource.dao.mapper.master.MUserMapper;
 import com.wyb.mybatis.multidatasource.dao.mapper.slave.SUserMapper;
 import com.wyb.mybatis.multidatasource.dao.model.UserDo;
 import com.wyb.mybatis.multidatasource.service.MasterSlaveService;
-
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author Marcher丶
@@ -29,9 +28,21 @@ public class MasterSlaveServiceImpl implements MasterSlaveService {
     @Transactional
     @Override
     public void testMasterTransaction(UserDo userDo) {
-        mUserMapper.insert(userDo);
+        int i = mUserMapper.insert(userDo);
+        if (i > 0) {
+            List<UserDo> users = mUserMapper.getAll();
+            UserDo latestDo = users.get(users.size() -1);
+            latestDo.setUsername("update username");
+            testUpdateMasterTransaction(latestDo);
+        }
         System.out.println("测试普通事务");
-        System.out.println(1 / 0);
+//        System.out.println(1 / 0);
+    }
+
+    @Transactional
+    @Override
+    public void testUpdateMasterTransaction(UserDo userDo) {
+        mUserMapper.update(userDo);
     }
 
 }
