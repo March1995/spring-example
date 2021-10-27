@@ -73,12 +73,19 @@ public class Singleton {
         System.out.println("test1 requestBean内存地址：" + System.identityHashCode(requestBean));
     }
 
+    /**
+     * key只存在于一级域名  写在一级域名 二级域名读
+     * key 一二级域名都有  读有问题
+     * @param request
+     * @param response
+     */
     @GetMapping("/addCookie")
     public void addCookie(HttpServletRequest request, HttpServletResponse response) {
         String domain = "dev.kehou.com";
         String name = "name";
         String value = "value";
         CookieUtil.addCookieByName(request, response, domain, name, value, 30 * 10);
+        CookieUtil.addCookieByName(request, response, "m.dev.kehou.com", name, "mvalue", 30 * 10);
         value = CookieUtil.getCookieValueByName(request, name);
         System.out.println(value);
 //        String
