@@ -58,6 +58,29 @@ public class RabbitSender implements RabbitTemplate.ConfirmCallback, RabbitTempl
     }
 
     /**
+     * 发送MQ消息 异步 顺序消费
+     *
+     * @param exchangeName 交换机名称
+     * @param routingKey   路由名称
+     * @param message      发送消息体
+     */
+    public void sendMessageSequence(String exchangeName, String routingKey, SendMessage message) {
+        Assert.notNull(message, "message 消息体不能为NULL");
+        Assert.notNull(exchangeName, "exchangeName 不能为NULL");
+        Assert.notNull(routingKey, "routingKey 不能为NULL");
+
+        // 获取CorrelationData对象
+        CustomCorrelationData correlationData = this.customCorrelationData(message);
+        correlationData.setExchange(exchangeName);
+        correlationData.setRoutingKey(routingKey);
+        correlationData.setMessage(message);
+        log.info("发送MQ消息，消息ID：{}，消息体:{}, exchangeName:{}, routingKey:{}",
+                correlationData.getId(), JSON.toJSONString(message), exchangeName, routingKey);
+        // 发送消息
+        rabbitTemplate.convertSendAndReceive(exchangeName, routingKey, message, correlationData);
+    }
+
+    /**
      * RPC方式，发送MQ消息
      *
      * @param exchangeName 交换机名称

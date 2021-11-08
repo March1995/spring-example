@@ -34,8 +34,25 @@ public class RabbitmqController {
         sendMessage.setId("1");
         sendMessage.setAge(20);
         sendMessage.setName(name);
-
+        // 没法保证顺序消费
         rabbitSender.sendMessage(RabbitConstants.MQ_EXCHANGE_SEND_AWARD, RabbitConstants.MQ_ROUTING_KEY_SEND_COUPON, sendMessage);
+        return "发送成功";
+    }
+
+    @ApiOperation(value = "发送MQ消息接口-顺序消费", notes = "用户名", response = Object.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "name", value = "用户名称", required = false, dataType = "String", paramType = "query")})
+    @PostMapping(value = "sendMsgSequence", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public Object sendMessageSequence(String name) {
+        SendMessage sendMessage = new SendMessage();
+        for (int i = 0; i < 10; i++) {
+            sendMessage.setId(String.valueOf(i));
+            sendMessage.setAge(20);
+            sendMessage.setName(name);
+            // 保证顺序消费
+            rabbitSender.sendMessageSequence(RabbitConstants.MQ_EXCHANGE_SEND_AWARD, RabbitConstants.MQ_ROUTING_KEY_SEND_COUPON, sendMessage);
+        }
         return "发送成功";
     }
 
