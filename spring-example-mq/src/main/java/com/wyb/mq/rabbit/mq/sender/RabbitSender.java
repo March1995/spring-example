@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.support.CorrelationData;
 import org.springframework.beans.factory.InitializingBean;
@@ -140,8 +141,7 @@ public class RabbitSender implements RabbitTemplate.ConfirmCallback, RabbitTempl
                 // 重发发消息
                 this.convertAndSend(customCorrelationData.getExchange(), customCorrelationData.getRoutingKey(),
                         customCorrelationData.getMessage(), customCorrelationData);
-            }
-            else {
+            } else {
                 //消息重试发送失败,将消息放到数据库等待补发
                 log.warn("MQ消息重发失败，消息入库，消息ID：{}，消息体:{}", correlationData.getId(),
                         JSON.toJSONString(customCorrelationData.getMessage()));
@@ -222,6 +222,22 @@ public class RabbitSender implements RabbitTemplate.ConfirmCallback, RabbitTempl
         }
     }
 
+    /**
+     * 发送延时消息
+     *
+     * @param exchange        交换机名称
+     * @param routingKey      路由key
+     * @param message         消息内容
+     */
+    public void sendDelayMessage(String exchange, String routingKey, final Object message) {
+        rabbitTemplate.convertAndSend(exchange, routingKey, message, new MessagePostProcessor() {
+            @Override
+            public Message postProcessMessage(Message message) throws AmqpException {
+                message.getMessageProperties().setHeader("x-delay", 10000);//设置延迟时间
+                return message;
+            }
+        });
+    }
 
     @Override
     public void afterPropertiesSet() throws Exception {

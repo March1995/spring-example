@@ -25,9 +25,10 @@ public class Producer {
         channel.queueDeclare(QUEUE_NAME, false, false, false, null);
 
         // 消息内容
-        String message = "Hello World!";
-        channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
-
+        for (int i = 0; i < 10;i ++) {
+            String message = "Hello World!" + i;
+            channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
+        }
         channel.close();
         connection.close();
     }
