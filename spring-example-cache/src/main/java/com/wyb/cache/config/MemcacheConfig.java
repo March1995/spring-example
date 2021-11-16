@@ -2,10 +2,9 @@ package com.wyb.cache.config;
 
 import lombok.extern.slf4j.Slf4j;
 import net.spy.memcached.MemcachedClient;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
+import net.spy.memcached.spring.MemcachedClientFactoryBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.io.IOException;
@@ -21,13 +20,13 @@ public class MemcacheConfig {
     @Resource
     private MemcacheSource memcacheSource;
 
-    @Bean
+    @ConditionalOnClass(MemcachedClientFactoryBean.class)
     public MemcachedClient client() {
         MemcachedClient client = null;
         try {
-            client = new MemcachedClient(new InetSocketAddress(memcacheSource.getIp(),memcacheSource.getPort()));
+            client = new MemcachedClient(new InetSocketAddress(memcacheSource.getIp(), memcacheSource.getPort()));
         } catch (IOException e) {
-            log.error("inint MemcachedClient failed ",e);
+            log.error("inint MemcachedClient failed ", e);
         }
         if (null == client) log.error("MemcachedClient is null");
         return client;

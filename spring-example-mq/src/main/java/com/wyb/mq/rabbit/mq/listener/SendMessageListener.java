@@ -2,6 +2,7 @@ package com.wyb.mq.rabbit.mq.listener;
 
 import com.alibaba.fastjson.JSON;
 import com.rabbitmq.client.Channel;
+import com.wyb.cache.service.CacheService;
 import com.wyb.mq.bo.MsgTxtBo;
 import com.wyb.mq.entity.MessageContent;
 import com.wyb.mq.entity.ProductInfo;
@@ -28,7 +29,7 @@ public class SendMessageListener extends AbstractConsumer {
 
     private final Logger logger = LoggerFactory.getLogger(SendMessageListener.class);
 
-    public static final String LOCK_KEY = "MQ_CONSUMER";
+    public static final String LOCK_KEY = "MQ_CONSUMER:";
 
     @Resource
     private MsgContentMapper msgContentMapper;
@@ -36,6 +37,8 @@ public class SendMessageListener extends AbstractConsumer {
     private IProductService productService;
     @Resource
     private RedisTemplate redisTemplate;
+    @Resource
+    private CacheService redisService;
 
     @RabbitListener(queues = RabbitConstants.QUEUE_NAME_ORDER_TO_PRODUCT)
     public void process(MsgTxtBo msgTxtBo, Channel channel, Message message) throws Exception {
@@ -43,7 +46,8 @@ public class SendMessageListener extends AbstractConsumer {
         long deliveryTag = message.getMessageProperties().getDeliveryTag();
 
         // 加分布式锁控制重复消费
-        if (redisTemplate.opsForValue().setIfAbsent(LOCK_KEY + msgTxtBo.getMsgId(), msgTxtBo.getMsgId())) {
+//        if (redisTemplate.opsForValue().setIfAbsent(LOCK_KEY + msgTxtBo.getMsgId(), msgTxtBo.getMsgId())) {
+        if (redisService.tryLock(LOCK_KEY + msgTxtBo.getMsgId(), 2)) {
             // onMessage(message);
             logger.info("[{}]处理优惠券队列消息队列接收数据，消息体：{}", RabbitConstants.QUEUE_NAME_ORDER_TO_PRODUCT, JSON.toJSONString(msgTxtBo));
 

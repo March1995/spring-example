@@ -6,9 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.wyb.cache.constant.CacheType;
 import com.wyb.cache.dao.model.UserDo;
-import com.wyb.cache.factory.CacheFactory;
 import com.wyb.cache.service.CacheService;
 import com.wyb.cache.service.UserService;
 
@@ -29,28 +27,25 @@ public class CacheController {
     private UserService userService;
 
     @Resource
-    private CacheFactory cacheFactory;
+    private CacheService redisService;
 
     @GetMapping("/add")
     public UserDo addById() {
         UserDo userDo = userService.getById(1);
-        CacheService cache = cacheFactory.getCache(CacheType.REDIS);
-        cache.putCache(String.valueOf(userDo.getId()), userDo);
-        userDo = (UserDo) cache.getCache(userDo.getId().toString());
+        redisService.putCache(String.valueOf(userDo.getId()), userDo);
+        userDo = (UserDo) redisService.getCache(userDo.getId().toString());
         return userDo;
     }
 
     @GetMapping("/get")
     public UserDo getById() {
-        CacheService cache = cacheFactory.getCache(CacheType.REDIS);
-        return (UserDo) cache.getCache("1");
+        return (UserDo) redisService.getCache("1");
     }
 
     @GetMapping("/lock")
     public String lock() {
-        CacheService cache = cacheFactory.getCache(CacheType.REDIS);
         try {
-            boolean t = cache.tryLock("LipapayOrderQueryScheduled.checkProcessOrderStatus", 2000, 2000);
+            boolean t = redisService.tryLock("LipapayOrderQueryScheduled.checkProcessOrderStatus", 2000, 2000);
             String s = Thread.currentThread().getName() + "=====================";
             if (!t) {
                 return "服务繁忙，请退出重试";
@@ -71,7 +66,7 @@ public class CacheController {
             log.error("[LipapayOrderQueryScheduled][checkProcessOrderStatus] process error, e {}", e);
         }
         finally {
-            cache.unlock("LipapayOrderQueryScheduled.checkProcessOrderStatus");
+            redisService.unlock("LipapayOrderQueryScheduled.checkProcessOrderStatus");
         }
         return "服务繁忙，请退出重试";
     }

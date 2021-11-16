@@ -1,8 +1,10 @@
 package com.wyb.cache.service.impl;
 
+import com.wyb.cache.config.MemcacheConfig;
 import com.wyb.cache.service.CacheService;
 import lombok.extern.slf4j.Slf4j;
 import net.spy.memcached.MemcachedClient;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -18,6 +20,7 @@ import java.util.concurrent.TimeUnit;
  * @version: 2018-02-01 15:53
  */
 @Slf4j
+@ConditionalOnBean(MemcachedClient.class)
 @Service("memcacheService")
 public class MemcachedServiceImpl implements CacheService {
 
