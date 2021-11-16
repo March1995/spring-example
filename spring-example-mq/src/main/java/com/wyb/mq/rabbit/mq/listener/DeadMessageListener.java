@@ -1,7 +1,9 @@
 package com.wyb.mq.rabbit.mq.listener;
 
 import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rabbitmq.client.Channel;
+import com.wyb.mq.bo.MsgTxtBo;
 import com.wyb.mq.rabbit.constants.RabbitConstants;
 import com.wyb.mq.rabbit.mq.SendMessage;
 import org.slf4j.Logger;
@@ -20,7 +22,10 @@ public class DeadMessageListener extends AbstractConsumer {
     private final Logger logger = LoggerFactory.getLogger(SendMessageListener.class);
 
     @RabbitListener(queues = RabbitConstants.QUEUE_NAME_DEAD_QUEUE)
-    public void processDlx(SendMessage sendMessage, Channel channel, Message message) throws Exception {
+    public void processDlx(Channel channel, Message message) throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        MsgTxtBo sendMessage = objectMapper.readValue(message.getBody(), MsgTxtBo.class);
+
         logger.info("[{}]处理死信队列消息队列接收数据，消息体：{}", RabbitConstants.QUEUE_NAME_DEAD_QUEUE, JSON.toJSONString(sendMessage));
 
         System.out.println(message.getMessageProperties().getDeliveryTag());

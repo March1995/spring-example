@@ -7,6 +7,7 @@ import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -26,7 +27,7 @@ public class RabbitConfig {
      * 动态声明 queue，exchange，routing
      */
     @Bean
-    public RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory){
+    public RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory) {
         connectionFactory.addConnectionListener(new RabbitMQConnectionListener());
 
         // 生成服务端
@@ -40,13 +41,13 @@ public class RabbitConfig {
         rabbitAdmin.declareExchange(deadExchange);
         rabbitAdmin.declareBinding(BindingBuilder.bind(deadQueue).to(deadExchange));
 
-        // 发放奖励队列交换机
-        DirectExchange exchange = new DirectExchange(RabbitConstants.MQ_EXCHANGE_SEND_AWARD);
-        // 声明发送优惠券的消息队列（Direct类型的exchange）
-        Queue couponQueue = queue(RabbitConstants.QUEUE_NAME_SEND_COUPON);
+        // 减少库存队列交换机
+        DirectExchange exchange = new DirectExchange(RabbitConstants.MQ_EXCHANGE_ORDER_TO_PRODUCT);
+        // 声明减少库存的消息队列（Direct类型的exchange）
+        Queue couponQueue = queue(RabbitConstants.QUEUE_NAME_ORDER_TO_PRODUCT);
         rabbitAdmin.declareQueue(couponQueue);
         rabbitAdmin.declareExchange(exchange);
-        rabbitAdmin.declareBinding(BindingBuilder.bind(couponQueue).to(exchange).with(RabbitConstants.MQ_ROUTING_KEY_SEND_COUPON));
+        rabbitAdmin.declareBinding(BindingBuilder.bind(couponQueue).to(exchange).with(RabbitConstants.MQ_ROUTING_KEY_ORDER_TO_PRODUCT));
 
 
         // 声明延时队列（Direct类型的exchange）
@@ -75,5 +76,14 @@ public class RabbitConfig {
         // 至少有一个消费者连接到这个队列，之后所有与这个队列连接的消费者都断开时，才会自动删除
         boolean autoDelete = false;
         return new Queue(name, durable, exclusive, autoDelete, args);
+    }
+
+
+    /**
+     * 解决consumer乱码问题
+     */
+    @Bean
+    Jackson2JsonMessageConverter messageConverter() {
+        return new Jackson2JsonMessageConverter();
     }
 }

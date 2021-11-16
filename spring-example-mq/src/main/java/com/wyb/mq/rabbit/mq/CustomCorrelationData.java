@@ -40,6 +40,11 @@ public class CustomCorrelationData extends CorrelationData {
      */
     private int retryCount = 0;
 
+    /**
+     * 最大重试次数
+     */
+    private int maxRetryCount;
+
     public CustomCorrelationData() {
         super();
     }

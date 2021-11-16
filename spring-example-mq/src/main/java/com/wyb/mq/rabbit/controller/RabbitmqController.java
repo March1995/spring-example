@@ -35,7 +35,7 @@ public class RabbitmqController {
         sendMessage.setAge(20);
         sendMessage.setName(name);
         // 没法保证顺序消费
-        rabbitSender.sendMessage(RabbitConstants.MQ_EXCHANGE_SEND_AWARD, RabbitConstants.MQ_ROUTING_KEY_SEND_COUPON, sendMessage);
+        rabbitSender.sendMessage(RabbitConstants.MQ_EXCHANGE_ORDER_TO_PRODUCT, RabbitConstants.QUEUE_NAME_ORDER_TO_PRODUCT, sendMessage);
         return "发送成功";
     }
 
@@ -51,7 +51,7 @@ public class RabbitmqController {
             sendMessage.setAge(20);
             sendMessage.setName(name);
             // 保证顺序消费
-            rabbitSender.sendMessageSequence(RabbitConstants.MQ_EXCHANGE_SEND_AWARD, RabbitConstants.MQ_ROUTING_KEY_SEND_COUPON, sendMessage);
+            rabbitSender.sendAndReceiveMessage(RabbitConstants.MQ_EXCHANGE_ORDER_TO_PRODUCT, RabbitConstants.MQ_ROUTING_KEY_ORDER_TO_PRODUCT, sendMessage);
         }
         return "发送成功";
     }

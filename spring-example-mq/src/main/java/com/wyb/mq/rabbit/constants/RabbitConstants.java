@@ -38,18 +38,28 @@ public final class RabbitConstants {
     public static final String MQ_ROUTING_KEY_DELAY_QUEUE = "test-routing-key-delay-queue";
 
     /**
-     * 发放奖励EXCHANGE名称
+     * 下单后减少库存EXCHANGE名称
      */
-    public static final String MQ_EXCHANGE_SEND_AWARD = "test-send-award-exchange";
+    public static final String MQ_EXCHANGE_ORDER_TO_PRODUCT = "order-to-product-exchange";
 
     /**
-     * 发放优惠券队列名称
+     * 下单后减少库存队列名称
      */
-    public static final String QUEUE_NAME_SEND_COUPON = "test-send-coupon-queue";
+    public static final String QUEUE_NAME_ORDER_TO_PRODUCT = "order-to-product-queue";
 
     /**
-     * 发放优惠券路由key
+     * 下单后减少库存路由key
      */
-    public static final String MQ_ROUTING_KEY_SEND_COUPON = "test-routing-key-send-coupon";
+    public static final String MQ_ROUTING_KEY_ORDER_TO_PRODUCT = "routing-key-order-to-product";
+
+    /**
+     * 消息重发的最大次数
+     */
+    public static final Integer MSG_RETRY_COUNT = 5;
+
+    /**
+     * 定时任务时间范围
+     */
+    public static final Integer TIME_DIFF = 30;
 
 }
