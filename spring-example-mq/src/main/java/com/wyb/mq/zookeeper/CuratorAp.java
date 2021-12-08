@@ -29,7 +29,7 @@ public class CuratorAp {
      * 集群模式则是多个ip
      */
     // private static final String zkServerIps = "192.168.10.124:2182,192.168.10.124:2183,192.168.10.124:2184";
-        private static final String zkServerIps = "47.110.64.176:2181,192.168.31.128";
+        private static final String zkServerIps = "192.168.36.54:2181";
 
     public static CuratorFramework getConnection() {
         if (client == null) {
@@ -228,9 +228,9 @@ public class CuratorAp {
         if (checkExists("/qxw")) {
             delete("/qxw");
         }
-//        System.out.println("创建节点：" + create("/qxw/q1", "苏打水法萨芬撒"));
-//        System.out.println("创建节点：" + create("/qxw/q2", "苏打水法萨芬撒"));
-//        System.out.println("创建节点："+create("/qxw/q3", "苏打水法萨芬撒"));
+        System.out.println("创建节点：" + create("/qxw/q1", "苏打水法萨芬撒"));
+        System.out.println("创建节点：" + create("/qxw/q2", "苏打水法萨芬撒"));
+        System.out.println("创建节点："+create("/qxw/q3", "苏打水法萨芬撒"));
         //
         //
         //
