@@ -6,7 +6,6 @@
     <groupId>com.wyb</groupId>
     <artifactId>spring-example</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <relativePath/> <!-- lookup parent from repository -->
   </parent>
   <groupId>spring-example</groupId>
   <artifactId>spring-example-mybatis-plus</artifactId>

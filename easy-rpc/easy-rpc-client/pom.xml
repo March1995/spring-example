@@ -9,6 +9,7 @@
     </parent>
     <artifactId>easy-rpc-client</artifactId>
     <packaging>jar</packaging>
+    <version>0.0.1</version>
 
     <dependencies>
         <dependency>
