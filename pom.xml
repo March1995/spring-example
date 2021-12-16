@@ -38,7 +38,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-    <spring.boot.verion>2.0.8.RELEASE</spring.boot.verion>
+    <spring.boot.version>2.0.8.RELEASE</spring.boot.version>
     <spring.verion>5.0.12.RELEASE</spring.verion>
     <mapstruct.version>1.4.2.Final</mapstruct.version>
   </properties>
@@ -55,7 +55,7 @@
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
-        <version>${spring.boot.verion}</version>
+        <version>${spring.boot.version}</version>
         <type>pom</type>
         <scope>provided</scope>
       </dependency>
@@ -72,7 +72,7 @@
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter</artifactId>
-        <version>${spring.boot.verion}</version>
+        <version>${spring.boot.version}</version>
         <exclusions>
           <exclusion>
             <groupId>org.springframework.boot</groupId>
@@ -84,93 +84,93 @@
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-log4j2</artifactId>
-        <version>${spring.boot.verion}</version>
+        <version>${spring.boot.version}</version>
       </dependency>
 
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-web</artifactId>
-        <version>${spring.boot.verion}</version>
+        <version>${spring.boot.version}</version>
       </dependency>
 
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-aop</artifactId>
-        <version>${spring.boot.verion}</version>
+        <version>${spring.boot.version}</version>
       </dependency>
 
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-security</artifactId>
-        <version>${spring.boot.verion}</version>
+        <version>${spring.boot.version}</version>
       </dependency>
 
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-test</artifactId>
-        <version>${spring.boot.verion}</version>
+        <version>${spring.boot.version}</version>
         <scope>test</scope>
       </dependency>
 
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-amqp</artifactId>
-        <version>${spring.boot.verion}</version>
+        <version>${spring.boot.version}</version>
       </dependency>
 
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-activemq</artifactId>
-        <version>${spring.boot.verion}</version>
+        <version>${spring.boot.version}</version>
       </dependency>
 
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-cache</artifactId>
-        <version>${spring.boot.verion}</version>
+        <version>${spring.boot.version}</version>
       </dependency>
 
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-data-redis</artifactId>
-        <version>${spring.boot.verion}</version>
+        <version>${spring.boot.version}</version>
       </dependency>
 
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-freemarker</artifactId>
-        <version>${spring.boot.verion}</version>
+        <version>${spring.boot.version}</version>
       </dependency>
 
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-websocket</artifactId>
-        <version>${spring.boot.verion}</version>
+        <version>${spring.boot.version}</version>
       </dependency>
 
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-configuration-processor</artifactId>
-        <version>${spring.boot.verion}</version>
+        <version>${spring.boot.version}</version>
         <optional>true</optional>
       </dependency>
 
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-autoconfigure</artifactId>
-        <version>${spring.boot.verion}</version>
+        <version>${spring.boot.version}</version>
       </dependency>
 
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-jta-atomikos</artifactId>
-        <version>${spring.boot.verion}</version>
+        <version>${spring.boot.version}</version>
       </dependency>
 
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-actuator</artifactId>
-        <version>${spring.boot.verion}</version>
+        <version>${spring.boot.version}</version>
       </dependency>
 
       <dependency>
@@ -285,11 +285,26 @@
 
       <!-- swagger -->
       <dependency>
+        <groupId>com.github.xiaoymin</groupId>
+        <artifactId>knife4j-spring-boot-starter</artifactId>
+        <version>2.0.5</version>
+      </dependency>
+      <dependency>
         <groupId>io.springfox</groupId>
         <artifactId>springfox-swagger2</artifactId>
         <version>2.9.2</version>
+        <exclusions>
+          <exclusion>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-models</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
-
+      <dependency>
+        <groupId>io.swagger</groupId>
+        <artifactId>swagger-models</artifactId>
+        <version>1.5.22</version>
+      </dependency>
       <dependency>
         <groupId>io.springfox</groupId>
         <artifactId>springfox-swagger-ui</artifactId>
@@ -346,7 +361,7 @@
         <plugin>
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-maven-plugin</artifactId>
-          <version>${spring.boot.verion}</version>
+          <version>${spring.boot.version}</version>
           <executions>
             <execution>
               <goals>
