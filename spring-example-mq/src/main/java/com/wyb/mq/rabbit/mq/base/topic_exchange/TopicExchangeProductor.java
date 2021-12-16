@@ -13,11 +13,11 @@ public class TopicExchangeProductor {
 
         //创建连接工厂
         ConnectionFactory connectionFactory = new ConnectionFactory();
-        connectionFactory.setHost("192.168.159.8");
+        connectionFactory.setHost("111.231.85.51");
         connectionFactory.setPort(5672);
-        connectionFactory.setVirtualHost("tuling");
-        connectionFactory.setUsername("smlz");
-        connectionFactory.setPassword("smlz");
+        connectionFactory.setVirtualHost("test");
+        connectionFactory.setUsername("test");
+        connectionFactory.setPassword("test");
 
         //创建连接
         Connection connection = connectionFactory.newConnection();

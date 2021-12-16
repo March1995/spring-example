@@ -6,6 +6,7 @@ import com.wyb.mq.entity.ProductInfo;
 import com.wyb.mq.enumuration.MsgStatusEnum;
 import com.wyb.mq.mapper.MsgContentMapper;
 import com.wyb.mq.mapper.ProductInfoMapper;
+import com.wyb.mq.rabbit.mq.exception.BizExp;
 import com.wyb.mq.service.IProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,10 +42,10 @@ public class ProductServiceImpl implements IProductService {
             msgContentMapper.updateMsgStatus(messageContent);
             log.info("修改消息表状态为消费成功，msgId {}", msgTxtBo.getMsgId());
 
-//            System.out.println(1/0);
+            System.out.println(1/0);
         } catch (Exception e) {
 //            log.error("更新数据库失败:{}", e);
-            throw new RuntimeException("更新数据库异常");
+            throw new BizExp(0,"更新数据库异常");
         }
         return updateFlag;
     }

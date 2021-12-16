@@ -9,12 +9,12 @@ import com.wyb.mq.entity.ProductInfo;
 import com.wyb.mq.enumuration.MsgStatusEnum;
 import com.wyb.mq.mapper.MsgContentMapper;
 import com.wyb.mq.rabbit.constants.RabbitConstants;
+import com.wyb.mq.rabbit.mq.exception.BizExp;
 import com.wyb.mq.service.IProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -36,8 +36,6 @@ public class SendMessageListener extends AbstractConsumer {
     @Resource
     private IProductService productService;
     @Resource
-    private RedisTemplate redisTemplate;
-    @Resource
     private CacheService redisService;
 
     @RabbitListener(queues = RabbitConstants.QUEUE_NAME_ORDER_TO_PRODUCT)
@@ -47,7 +45,7 @@ public class SendMessageListener extends AbstractConsumer {
 
         // 加分布式锁控制重复消费
 //        if (redisTemplate.opsForValue().setIfAbsent(LOCK_KEY + msgTxtBo.getMsgId(), msgTxtBo.getMsgId())) {
-        if (redisService.tryLock(LOCK_KEY + msgTxtBo.getMsgId(), 2)) {
+        if (redisService.tryLock(LOCK_KEY + msgTxtBo.getMsgId(), 0, 0)) {
             // onMessage(message);
             logger.info("[{}]处理优惠券队列消息队列接收数据，消息体：{}", RabbitConstants.QUEUE_NAME_ORDER_TO_PRODUCT, JSON.toJSONString(msgTxtBo));
 
@@ -78,6 +76,12 @@ public class SendMessageListener extends AbstractConsumer {
                 channel.basicAck(deliveryTag, false);
                 logger.info("消费成功，orderNo {}， productNo {}", msgTxtBo.getOrderNo(), msgTxtBo.getProductNo());
             } catch (Exception e) {
+                if (e instanceof BizExp) {
+                    BizExp bizExp = (BizExp) e;
+                    logger.info("数据业务异常:{},即将删除分布式锁", bizExp.getErrMsg());
+                    //删除分布式锁
+                    redisService.unlock(LOCK_KEY);
+                }
                 logger.error("MQ消息处理异常，消息体:{}", message.getMessageProperties().getCorrelationId(), JSON.toJSONString(msgTxtBo), e);
 
                 //更新消息表状态
