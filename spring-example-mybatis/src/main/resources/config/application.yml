@@ -71,11 +71,11 @@ spring:
         username: admin
         password: admin
 
-#  security:
-#    user:
-#      name: admin
-#      password: admin
-#
+  security:
+    user:
+      name: admin
+      password: admin
+
 
 management:
   endpoints:
@@ -104,3 +104,9 @@ logging:
 
 logging.level.com.wyb.mybatis.dao.mapper: debug
 
+
+swagger:
+  production: false //如果此项设置为true，则swagger页面隐藏
+  basic:
+    enable: true //此项设置为true表示开启账号密码验证
+    username: admin //enable为true时对应的登陆账号

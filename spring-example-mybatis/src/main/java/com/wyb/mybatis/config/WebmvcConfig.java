@@ -31,29 +31,28 @@ public class WebmvcConfig implements WebMvcConfigurer {
 //        registry.addResourceHandler("doc.html").addResourceLocations("classpath:/META-INF/resources/");
 //        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
 //    }
-
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("redirect:/doc.html");
+        registry.addViewController("/").setViewName("redirect:/swagger-ui.html");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
         WebMvcConfigurer.super.addViewControllers(registry);
     }
 
     @Bean
-        public CorsFilter corsFilter() {
-            UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-            CorsConfiguration config = new CorsConfiguration();
-            config.setAllowCredentials(true);
-            config.setAllowedOrigins(Collections.singletonList("*"));
-            config.setAllowedMethods(Collections.singletonList("*"));
-            config.setAllowedHeaders(Collections.singletonList("*"));
-            // 暴露 header 中的其他属性给客户端应用程序
-            config.setExposedHeaders(Arrays.asList(
-                    "Authorization", "X-Total-Count", "Link",
-                    "Access-Control-Allow-Origin",
-                    "Access-Control-Allow-Credentials"
-            ));
-            source.registerCorsConfiguration("/**", config);
-            return new CorsFilter(source);
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.setAllowedOrigins(Collections.singletonList("*"));
+        config.setAllowedMethods(Collections.singletonList("*"));
+        config.setAllowedHeaders(Collections.singletonList("*"));
+        // 暴露 header 中的其他属性给客户端应用程序
+        config.setExposedHeaders(Arrays.asList(
+                "Authorization", "X-Total-Count", "Link", "sendType",
+                "Access-Control-Allow-Origin",
+                "Access-Control-Allow-Credentials"
+        ));
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
     }
 }
