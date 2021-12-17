@@ -1,6 +1,5 @@
 package com.wyb.mybatis;
 
-import de.codecentric.boot.admin.server.config.EnableAdminServer;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +14,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 
 @SpringBootApplication
 @MapperScan(basePackages = "com.wyb.mybatis.dao.mapper")
-@EnableAdminServer
+//@EnableAdminServer
 @Slf4j
 @EnableTransactionManagement
 public class MybatisApplication implements CommandLineRunner, ApplicationRunner {

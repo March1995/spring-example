@@ -24,7 +24,7 @@ import org.springframework.web.filter.CorsFilter;
  * </p>
  *
  * @author Marcher丶
- * */
+ */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -55,13 +55,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/i18n/**")
                 .antMatchers("/test/**")
                 .antMatchers("/h2/**")
-                .antMatchers("/actuator/**")
-                .antMatchers("/instances/**")
-                .antMatchers("/applications/**")
-                .antMatchers("/assets/**")
-                .antMatchers("/css/**")
-                .antMatchers("/js/**")
-                .antMatchers("/fonts/**")
                 .antMatchers("/doc.html")
                 .antMatchers("/webjars/**")
                 .antMatchers("/swagger-resources/**")
@@ -105,5 +98,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 //    private JwtConfigurer securityConfigurationAdapter() throws Exception{
 //        return new JwtConfigurer(new JwtAuthorizationFilter(authenticationManager()));
+//    }
+
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception {
+//        http.authorizeRequests().anyRequest().permitAll()
+//                .and().csrf().disable();
 //    }
 }

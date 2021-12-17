@@ -8,8 +8,11 @@
     <Property name="logging.file.warn.name">${logging.file.path}/${project.name}-warn.log</Property>
     <Property name="logging.file.error.name">${logging.file.path}/${project.name}-error.log</Property>
     <!--VM options:-Dlog4j.skipJansi=false  %highlight-->
-    <!--<Property name="layout">%d %p [%t] %c{10}:%M:%L %m%n</Property>-->
-    <Property name="layout">%style{%d}{bright,white} %highlight{%-5level} %style{[LOGID:%X{ydbus_logid}]}{cyan} [%style{%t}{bright,blue}] [%style{%C{5.}}{bright,yellow}:%L] %msg%n%style{%throwable}{red}</Property>
+<!--    <Property name="layout">%d %p [%t] %c{10}:%M:%L %m%n</Property>-->
+<!--    <Property name="layout">%style{%d}{bright,white} %highlight{%-5level} %style{[LOGID:%X{ydbus_logid}]}{cyan} [%style{%t}{bright,blue}] [%style{%C{5.}}{bright,yellow}:%L] %msg%n%style{%throwable}{red}</Property>-->
+    <!-- 格式化输出：%date表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度 %msg：日志消息，%n是换行符 -->
+    <property name="layout"
+              value="%clr{%d{yyyy-MM-dd HH:mm:ss.SSS}}{faint} %clr{%5p} %clr{${sys:PID}}{magenta} %clr{---}{faint} %clr{[%15.15t]}{faint} %clr{%-40.40c{1.}}{cyan} %clr{:}{faint} %m%n%xwEx" />
   </Properties>
 
   <Appenders>
