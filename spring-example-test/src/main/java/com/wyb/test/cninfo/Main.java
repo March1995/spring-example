@@ -2,6 +2,7 @@ package com.wyb.test.cninfo;
 
 import com.alibaba.fastjson.JSON;
 import com.wyb.test.cninfo.config.Config;
+import com.wyb.test.cninfo.entity.Announcement;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
@@ -28,7 +29,7 @@ public class Main {
         request.setMethod("post");
         request.setContentType("application/json;charset=UTF-8");
         String anno = queryAnnouncement(request, stocks.get(0));
-        System.out.println(anno);
+        System.out.println(Announcement.fromJson(anno));
 //        stocks.forEach(x -> {
 //            System.out.println(x.toString());
 //        });
@@ -50,7 +51,7 @@ public class Main {
         params.put("pageSize", "30");
         params.put("pageNum", "1");
         params.put("column", "szse");
-        params.put("category", "");
+        params.put("category", "category_ndbg_szsh;category_bndbg_szsh;category_yjdbg_szsh;category_yjygjxz_szsh;category_sjdbg_szsh;");
         params.put("plate", "sz");
         params.put("seDate", "");
         params.put("searchkey", "");
