@@ -1,10 +1,17 @@
 package com.wyb.test.cninfo.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.util.CollectionUtils;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @Data
@@ -30,6 +37,18 @@ public class Announcement {
         return CnInfoGsonBuilder.create().fromJson(jsonStr, Announcement.class);
     }
 
+    public List<AnnouncementsDTO> filterAnnouncementsByDate() {
+        LocalDate today = LocalDate.now();
+        if (!CollectionUtils.isEmpty(announcements)) {
+            announcements = announcements.stream().filter(announcementsDTO -> {
+                LocalDate localDate = Instant.ofEpochMilli(announcementsDTO.getAnnouncementTime()).atZone(ZoneOffset.ofHours(8)).toLocalDate();
+                return today.equals(localDate);
+            }).collect(Collectors.toList());
+            return announcements;
+        }
+        return Collections.emptyList();
+    }
+
     @NoArgsConstructor
     @Data
     public static class AnnouncementsDTO {
@@ -46,6 +65,7 @@ public class Announcement {
         @JsonProperty("announcementTitle")
         private String announcementTitle;
         @JsonProperty("announcementTime")
+        @SerializedName("announcementTime")
         private Long announcementTime;
         @JsonProperty("adjunctUrl")
         private String adjunctUrl;

@@ -10,7 +10,7 @@ public class CnInfoGsonBuilder {
     static {
         INSTANCE.disableHtmlEscaping();
         INSTANCE.registerTypeAdapter(Announcement.class, new AnnouncementAdapter());
-        INSTANCE.registerTypeAdapter(Announcement.AnnouncementsDTO.class, new AnnouncementsDTOAdapter());
+//        INSTANCE.registerTypeAdapter(Announcement.AnnouncementsDTO.class, new AnnouncementsDTOAdapter());
     }
 
     public static Gson create() {

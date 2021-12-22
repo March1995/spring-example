@@ -7,9 +7,11 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Description:
@@ -22,16 +24,28 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         // 读取所有stock
-        List<Stock> stocks = getStockListFromFile();
+//        List<Stock> stocks = getStockListFromFile();
         // 读取公告
         Request request = new Request(UrlConstants.QUERY_ANNOUNCEMENT,
                 new Config());
         request.setMethod("post");
         request.setContentType("application/json;charset=UTF-8");
-        String anno = queryAnnouncement(request, stocks.get(0));
-        System.out.println(Announcement.fromJson(anno));
-//        stocks.forEach(x -> {
-//            System.out.println(x.toString());
+        String stockStr = queryAnnouncement(request, null);
+        Announcement announcement = Announcement.fromJson(stockStr);
+        List<Announcement.AnnouncementsDTO> announcements = announcement.filterAnnouncementsByDate();
+        System.out.println("list:" + announcements.toString());
+
+//        stocks = stocks.stream().filter(x -> x.getCode().equals("001227")).collect(Collectors.toList());
+//        stocks.forEach(stock -> {
+//            String stockStr = queryAnnouncement(request, stock);
+//            Announcement announcement = Announcement.fromJson(stockStr);
+//            List<Announcement.AnnouncementsDTO> announcements = announcement.filterAnnouncementsByDate();
+//            System.out.println("code:" + stock.getCode() + ",orgId:" + stock.getOrgId() + ",list:" + announcements.toString());
+//            try {
+//                Thread.sleep(500);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
 //        });
     }
 
@@ -46,14 +60,17 @@ public class Main {
 
     private static String queryAnnouncement(Request request, Stock stock) {
         Map<Object, Object> params = new HashMap<>();
-        params.put("stock", stock.getCode() + "," + stock.getOrgId());
+//        params.put("stock", stock.getCode() + "," + stock.getOrgId());
+        params.put("stock", "");
         params.put("tabName", "fulltext");
         params.put("pageSize", "30");
         params.put("pageNum", "1");
         params.put("column", "szse");
         params.put("category", "category_ndbg_szsh;category_bndbg_szsh;category_yjdbg_szsh;category_yjygjxz_szsh;category_sjdbg_szsh;");
+//        params.put("category", "");
         params.put("plate", "sz");
-        params.put("seDate", "");
+        LocalDate localDate = LocalDate.now();
+        params.put("seDate", localDate.toString() + "~" + localDate.toString());
         params.put("searchkey", "");
         params.put("secid", "");
         params.put("sortName", "");

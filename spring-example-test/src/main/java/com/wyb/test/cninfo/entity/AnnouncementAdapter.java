@@ -1,6 +1,7 @@
 package com.wyb.test.cninfo.entity;
 
 import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -17,14 +18,17 @@ public class AnnouncementAdapter implements JsonDeserializer<Announcement> {
         announcement.setTotalRecordNum(GsonHelper.getInteger(jsonObject, "totalRecordNum"));
 
 
-        if (jsonObject.has("announcements")) {
+        if (jsonObject.has("announcements") && GsonHelper.isNotNull(jsonObject.get("announcements"))) {
             JsonArray array = jsonObject.getAsJsonArray("announcements");
+//            List<Announcement.AnnouncementsDTO> announcements = CnInfoGsonBuilder.create().fromJson(jsonObject.get("announcements").toString(),
+//                    new TypeToken<List<Announcement.AnnouncementsDTO>>() {
+//                    }.getType());
             List<Announcement.AnnouncementsDTO> announcements = new ArrayList<>();
             for (JsonElement announcementDto : array) {
-                Announcement.AnnouncementsDTO dto = CnInfoGsonBuilder.create().fromJson(announcementDto, Announcement.AnnouncementsDTO.class);
-//                Announcement.AnnouncementsDTO announcements = CnInfoGsonBuilder.create().fromJson(jsonObject.get("announcements"),
-//                        new TypeToken<Announcement.AnnouncementsDTO>() {
-//                        }.getType());
+//                Announcement.AnnouncementsDTO dto = CnInfoGsonBuilder.create().fromJson(announcementDto, Announcement.AnnouncementsDTO.class);
+                Announcement.AnnouncementsDTO dto = CnInfoGsonBuilder.create().fromJson(announcementDto,
+                        new TypeToken<Announcement.AnnouncementsDTO>() {
+                        }.getType());
                 announcements.add(dto);
             }
             announcement.setAnnouncements(announcements);
