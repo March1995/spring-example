@@ -1,17 +1,23 @@
 package com.wyb.test.cninfo;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.wyb.test.cninfo.config.Config;
 import com.wyb.test.cninfo.entity.Announcement;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.CollectionUtils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Random;
 
 /**
  * Description:
@@ -23,17 +29,32 @@ import java.util.stream.Collectors;
 public class Main {
 
     public static void main(String[] args) throws Exception {
+        DateTimeFormatter format = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG);
         // 读取所有stock
 //        List<Stock> stocks = getStockListFromFile();
+//        String data = requestDataItem("600685");
+//        System.out.println(data);
+
         // 读取公告
-        Request request = new Request(UrlConstants.QUERY_ANNOUNCEMENT,
-                new Config());
-        request.setMethod("post");
-        request.setContentType("application/json;charset=UTF-8");
-        String stockStr = queryAnnouncement(request, null);
+        String stockStr = requestAnnouncement(null);
         Announcement announcement = Announcement.fromJson(stockStr);
         List<Announcement.AnnouncementsDTO> announcements = announcement.filterAnnouncementsByDate();
-        System.out.println("list:" + announcements.toString());
+        if (!CollectionUtils.isEmpty(announcements)) {
+            announcements.forEach(announcementsDTO -> {
+                LocalDateTime dateTime = LocalDateTime.now();
+                String num = requestDataItemForSz(announcementsDTO.getSecCode());
+                if (StringUtils.isEmpty(num)) {
+                    System.out.println("股票名称:" + announcementsDTO.getSecName() + ",股票代码:" + announcementsDTO.getSecCode() + ",深市暂无数据,请求沪市");
+                    num = requestDataItemForSh(announcementsDTO.getSecCode());
+                }
+                if (StringUtils.isEmpty(num)) {
+                    System.out.println("股票名称:" + announcementsDTO.getSecName() + ",股票代码:" + announcementsDTO.getSecCode() + ",两市都无数据");
+                    return;
+                }
+                System.out.println("股票名称:" + announcementsDTO.getSecName() + ",股票代码:" + announcementsDTO.getSecCode() + ",报告名称:" + announcementsDTO.getAnnouncementTitle() +
+                        ",当前时间:" + dateTime.format(format) + ",实时涨幅:" + num);
+            });
+        }
 
 //        stocks = stocks.stream().filter(x -> x.getCode().equals("001227")).collect(Collectors.toList());
 //        stocks.forEach(stock -> {
@@ -58,7 +79,12 @@ public class Main {
         return JSON.parseArray(conf, Stock.class);
     }
 
-    private static String queryAnnouncement(Request request, Stock stock) {
+    private static String requestAnnouncement(Stock stock) {
+        Request request = new Request(UrlConstants.QUERY_ANNOUNCEMENT,
+                new Config());
+        request.setMethod("post");
+        request.setContentType("application/json;charset=UTF-8");
+
         Map<Object, Object> params = new HashMap<>();
 //        params.put("stock", stock.getCode() + "," + stock.getOrgId());
         params.put("stock", "");
@@ -76,6 +102,50 @@ public class Main {
         params.put("sortName", "");
         params.put("sortType", "");
         params.put("isHLtitle", "true");
+        return doRequest(request, params);
+    }
+
+    private static String requestDataItemForSz(String code) {
+        String url = UrlConstants.QUERY_DATA_ITEM;
+        String randomString = getRandomString(17);
+        long currentTimeMillis = System.currentTimeMillis();
+        url = String.format(url, randomString, currentTimeMillis, "sz" + code, currentTimeMillis + 1);
+        System.out.println("请求的url为：" + url);
+        Request request = new Request(url,
+                new Config());
+        String data = doRequest(request, null);
+        if (!data.contains("{")) {
+            return null;
+        }
+        data = data.substring(data.indexOf("{", 0), data.indexOf("}", 1) + 1);
+        JSONObject obj = JSONObject.parseObject(data);
+        return (String) obj.get("3672520");
+    }
+
+    private static String requestDataItemForSh(String code) {
+        String url = UrlConstants.QUERY_DATA_ITEM;
+        String randomString = getRandomString(17);
+        long currentTimeMillis = System.currentTimeMillis();
+        url = String.format(url, randomString, currentTimeMillis, "sh" + code, currentTimeMillis + 1);
+        System.out.println("请求的url为：" + url);
+        Request request = new Request(url,
+                new Config());
+        return doRequest(request, null);
+    }
+
+    private static String requestDataItem(String code, String plate) {
+        String url = UrlConstants.QUERY_DATA_ITEM;
+        String randomString = getRandomString(17);
+        long currentTimeMillis = System.currentTimeMillis();
+        url = String.format(url, randomString, currentTimeMillis, (StringUtils.isEmpty(plate) ? "sz" : plate) + code, currentTimeMillis + 1);
+        System.out.println("请求的url为：" + url);
+        Request request = new Request(url,
+                new Config());
+        return doRequest(request, null);
+    }
+
+    private static String doRequest(Request request, Map<Object, Object> params) {
+
         io.github.biezhi.request.Request httpReq = null;
         if ("get".equalsIgnoreCase(request.method())) {
             httpReq = io.github.biezhi.request.Request.get(request.getUrl());
@@ -102,5 +172,17 @@ public class Main {
         }
         return html.toString();
 //        log.debug("页面数据：[{}] ", html.toString());
+    }
+
+    //length用户要求产生字符串的长度
+    public static String getRandomString(int length) {
+        String str = "0123456789";
+        Random random = new Random();
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < length; i++) {
+            int number = random.nextInt(10);
+            sb.append(str.charAt(number));
+        }
+        return sb.toString();
     }
 }
