@@ -47,6 +47,11 @@ spring:
         min-idle: 1
         max-active: 20
 
+#  cache:
+#    type: ehcache
+#    ehcache:
+#      config: ehcache.xml
+
 mybatis:
   mapper-locations: classpath:mapper/*Mapper.xml
   type-aliases-package: com.wyb.cache.dao.model
