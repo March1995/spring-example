@@ -38,6 +38,6 @@ spring:
 
 aliyun:
   mail:
-    app_id: 1232131
-    app_key: 123123
+    appId: 1232131
+    appKey: 123123
     url: http://www.baidu.com

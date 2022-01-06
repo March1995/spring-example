@@ -19,7 +19,9 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -52,7 +54,7 @@ public class ScannerLoginController {
      * 请求生成二维码
      */
     @GetMapping("/getQrCode")
-    public void generateQrCode(String uuid , HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void generateQrCode(String uuid, HttpServletRequest request, HttpServletResponse response) throws IOException {
         //设置页面不缓存
         assert response != null;
         response.setHeader("Pragma", "no-cache");
@@ -73,6 +75,35 @@ public class ScannerLoginController {
 
         //写给浏览器
         ImageIO.write(bufferedImage, "JPEG", response.getOutputStream());
+    }
+
+    /**
+     * 请求生成二维码
+     */
+    @GetMapping("/getQrCodeBase64")
+    @ResponseBody
+    public String generateQrCodeBase64(String uuid, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        //设置页面不缓存
+        assert response != null;
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setDateHeader("Expires", 0);
+
+        //设置输出的内容的类型为JPEG图像
+        response.setContentType("image/png");
+
+        //通过id查询数据设置二维码内容
+        String text = "{\"id\":\"" + uuid + "\"}";
+
+        // 把id存入redis
+        redisService.putCache(KEY_PRE + uuid, NO_USE, 300);
+
+        ByteArrayOutputStream outputStream = QREncodeBase64(text);
+
+        Base64.Encoder encoder = Base64.getEncoder();
+
+        return "data:image/png;base64," + encoder.encodeToString(outputStream.toByteArray());
+
     }
 
     @GetMapping("/checkQrCode")
@@ -139,6 +170,7 @@ public class ScannerLoginController {
 
             MatrixToImageConfig matrixToImageConfig = new MatrixToImageConfig(0xFF000001, 0xFFFFFFFF);
             bufferedImage = MatrixToImageWriter.toBufferedImage(bitMatrix, matrixToImageConfig);
+
         } catch (WriterException e) {
             e.printStackTrace();
         }
@@ -151,5 +183,29 @@ public class ScannerLoginController {
 //        return LogoMatrix(bufferedImage,new File(System.getProperty("user.dir") + "\\src\\main\\resources\\static\\img\\logo.png"));
     }
 
+    public static ByteArrayOutputStream QREncodeBase64(String content) {
+        int width = 250; // 图像宽度
+        int height = 250; // 图像高度
+        Map<EncodeHintType, Object> hints = new HashMap<>();
+        //内容编码格式
+        hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+        // 指定纠错等级
+        hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
+        //设置二维码边的空度，非负数
+        hints.put(EncodeHintType.MARGIN, 1);
+        BitMatrix bitMatrix = null;
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try {
+            bitMatrix = new MultiFormatWriter().encode(content, BarcodeFormat.QR_CODE, width, height, hints);
+
+            MatrixToImageWriter.writeToStream(bitMatrix, "PNG", outputStream);
+
+        } catch (WriterException | IOException e) {
+            e.printStackTrace();
+        }
+
+        return outputStream;
+
+    }
 
 }
