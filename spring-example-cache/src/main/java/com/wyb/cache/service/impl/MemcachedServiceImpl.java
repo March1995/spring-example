@@ -1,6 +1,5 @@
 package com.wyb.cache.service.impl;
 
-import com.wyb.cache.config.MemcacheConfig;
 import com.wyb.cache.service.CacheService;
 import lombok.extern.slf4j.Slf4j;
 import net.spy.memcached.MemcachedClient;
@@ -134,7 +133,6 @@ public class MemcachedServiceImpl implements CacheService {
 
     @Override
     public void hrem(String key, Object hashKey) {
-
     }
 
     @Override
@@ -160,6 +158,16 @@ public class MemcachedServiceImpl implements CacheService {
     @Override
     public boolean hexists(String key, Object hashKey) {
         return false;
+    }
+
+    @Override
+    public double hincr(String key, String item, double by) {
+        return 0;
+    }
+
+    @Override
+    public double hdecr(String key, String item, double by) {
+        return 0;
     }
 
     @Override

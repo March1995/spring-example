@@ -137,6 +137,7 @@ public interface CacheService {
 
     /**
      * 设置cache超时时间
+     *
      * @param key
      * @param timeout
      * @param unit
@@ -224,9 +225,31 @@ public interface CacheService {
      */
     boolean hexists(String key, Object hashKey);
 
+    /**
+     * hash递增 如果不存在,就会创建一个 并把新增后的值返回
+     *
+     * @param key  键
+     * @param item 项
+     * @param by   要增加几(大于0)
+     * @return
+     */
+    double hincr(String key, String item, double by);
+
+    /**
+     * hash递减
+     *
+     * @param key  键
+     * @param item 项
+     * @param by   要减少记(小于0)
+     * @return
+     */
+    double hdecr(String key, String item, double by);
+
+
     /******************************
      ********* set操作 ***********
      ******************************/
+
     /**
      * set add
      *
@@ -259,6 +282,7 @@ public interface CacheService {
 
     /**
      * set remove
+     *
      * @param key
      * @param values
      * @return
@@ -270,6 +294,7 @@ public interface CacheService {
      ************************************************************/
     /**
      * zset put
+     *
      * @param key
      * @param value
      * @param score
@@ -278,6 +303,7 @@ public interface CacheService {
 
     /**
      * zset score get
+     *
      * @param key
      * @param arg0
      * @param arg1
@@ -287,6 +313,7 @@ public interface CacheService {
 
     /**
      * zset range get
+     *
      * @param key
      * @param start
      * @param end
@@ -296,6 +323,7 @@ public interface CacheService {
 
     /**
      * zset remove
+     *
      * @param key
      * @param values
      * @return
@@ -304,6 +332,7 @@ public interface CacheService {
 
     /**
      * zset size
+     *
      * @param key
      * @return
      */
@@ -323,7 +352,6 @@ public interface CacheService {
 
     /**
      * 缓存锁，默认锁超时时间为10秒，超过10秒未释放锁，锁会失效，在大量锁争用时会进入不稳定状态
-     *
      */
     void lock(String key);
 
@@ -349,8 +377,8 @@ public interface CacheService {
      * 尝试获取带锁超时时间的缓存锁，在超时时间内，如果获取成功，则返回true；否则，返回false；
      *
      * @param key
-     * @param timeoutMS 请求锁超时时间，如果timeoutMS<0，则没有请求超时时间；<br/>
-     *                  但如果timeoutMS<0，功能同{@link CacheService#lock(String, int)}
+     * @param timeoutMS     请求锁超时时间，如果timeoutMS<0，则没有请求超时时间；<br/>
+     *                      但如果timeoutMS<0，功能同{@link CacheService#lock(String, int)}
      * @param lockTimeoutMS 锁超时时间，如果此时timeoutMS<0，则超过lockTimeoutMS时间未释放锁，锁会失效，在大量锁争用时会进入不稳定状态
      * @return
      */
@@ -365,6 +393,7 @@ public interface CacheService {
 
     /**
      * 根据key生成自增ID
+     *
      * @param key
      * @return
      */

@@ -47,6 +47,9 @@ spring:
         min-idle: 1
         max-active: 20
 
+#    redisson:
+#      config: classpath:redisson.yml # 具体的每个配置项，见 org.redisson.config.Config 类。
+
 #  cache:
 #    type: ehcache
 #    ehcache:

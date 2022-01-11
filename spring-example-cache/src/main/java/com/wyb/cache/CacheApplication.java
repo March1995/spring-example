@@ -11,7 +11,7 @@ import tk.mybatis.spring.annotation.MapperScan;
  * @author Kunzite
  */
 @EnableCaching
-@SpringBootApplication(exclude = CacheAutoConfiguration.class)
+@SpringBootApplication
 @MapperScan(basePackages = "com.wyb.cache.dao.mapper")
 public class CacheApplication {
 

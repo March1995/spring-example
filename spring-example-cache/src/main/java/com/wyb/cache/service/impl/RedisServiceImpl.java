@@ -24,28 +24,6 @@ import java.util.concurrent.TimeUnit;
 @Service("redisService")
 public class RedisServiceImpl implements CacheService {
 
-//    @Resource
-//    JedisCluster jedisCluster;
-//
-//    @Override
-//    public String setValue(String key, String value) {
-//        return jedisCluster.set(key,value);
-//    }
-//
-//    @Override
-//    public String getValueByKey(String key) {
-//        return jedisCluster.get(key);
-//    }
-//
-//    @Override
-//    public boolean delValueBykey(String key) {
-//        Long flag = jedisCluster.del(key);
-//        if (flag>0){
-//            return true;
-//        }
-//        return false;
-//    }
-
     @Resource
     private RedisTemplate redisTemplate;
 
@@ -308,6 +286,16 @@ public class RedisServiceImpl implements CacheService {
             log.error("GET Map size exception [key=" + key + "].", e);
             return false;
         }
+    }
+
+    @Override
+    public double hincr(String key, String item, double by) {
+        return redisTemplate.opsForHash().increment(key, item, by);
+    }
+
+    @Override
+    public double hdecr(String key, String item, double by) {
+        return redisTemplate.opsForHash().increment(key, item, -by);
     }
 
     @Override

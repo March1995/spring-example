@@ -1,11 +1,13 @@
 package com.wyb.cache.config;
 
-import java.time.Duration;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +15,7 @@ import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.listener.PatternTopic;
@@ -23,13 +26,8 @@ import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import lombok.extern.slf4j.Slf4j;
+import javax.annotation.Resource;
+import java.time.Duration;
 
 /**
  * RedisCacheConfig
@@ -39,11 +37,10 @@ import lombok.extern.slf4j.Slf4j;
  * @date 15/10/2017
  */
 @Slf4j
-@EnableCaching
 @Configuration
 public class RedisCacheConfig extends CachingConfigurerSupport {
 
-    @Autowired
+    @Resource
     private RedisConnectionFactory redisConnectionFactory;
 
     @Bean
@@ -65,9 +62,8 @@ public class RedisCacheConfig extends CachingConfigurerSupport {
     /**
      * 管理缓存
      */
-    @Override
     @Bean
-    public CacheManager cacheManager() {
+    public CacheManager cacheManager(LettuceConnectionFactory redisConnectionFactory) {
         //初始化一个RedisCacheWriter
         RedisCacheWriter redisCacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory);
         //设置CacheManager的值序列化方式为json序列化
@@ -85,6 +81,7 @@ public class RedisCacheConfig extends CachingConfigurerSupport {
 //        redisCacheManager.setDefaultExpiration(86400);
 //        return redisCacheManager;
     }
+
 
     @Bean
     @Override
