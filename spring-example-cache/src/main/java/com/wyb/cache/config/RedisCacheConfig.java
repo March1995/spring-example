@@ -65,6 +65,7 @@ public class RedisCacheConfig extends CachingConfigurerSupport {
     /**
      * 管理缓存
      */
+    @Override
     @Bean
     public CacheManager cacheManager() {
         //初始化一个RedisCacheWriter
