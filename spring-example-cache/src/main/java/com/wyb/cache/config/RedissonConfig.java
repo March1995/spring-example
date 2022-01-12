@@ -3,6 +3,7 @@ package com.wyb.cache.config;
 import com.wyb.cache.lock.RedissonLocker;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
+import org.redisson.config.ClusterServersConfig;
 import org.redisson.config.Config;
 import org.redisson.config.SentinelServersConfig;
 import org.redisson.config.SingleServerConfig;
@@ -25,13 +26,30 @@ public class RedissonConfig {
     @Bean
     public RedissonClient redissonClient() {
         Config config = new Config();
+        // cluster
+        if (redisProperties.getCluster() != null) {
+            ClusterServersConfig clusterServersConfig = config.useClusterServers();
+            clusterServersConfig.setScanInterval(2000); // 集群状态扫描间隔时间，单位是毫秒
+            List<String> nodeList = redisProperties.getCluster().getNodes();
+            String[] nodes = new String[nodeList.size()];
+            for (int i = 0; i < nodes.length; i++) {
+                nodes[i] = "redis://" + nodeList.get(i);
+            }
+            clusterServersConfig.addNodeAddress(nodes);
+            if (redisProperties.getPassword() != null) {
+                clusterServersConfig.setPassword(redisProperties.getPassword());
+            }
+        }
         //sentinel
-        if (redisProperties.getSentinel() != null) {
+        else if (redisProperties.getSentinel() != null) {
             SentinelServersConfig sentinelServersConfig = config.useSentinelServers();
             sentinelServersConfig.setMasterName(redisProperties.getSentinel().getMaster());
-            List<String> nodeList = redisProperties.getSentinel().getNodes();
+            List<String> nodeList = redisProperties.getCluster().getNodes();
             String[] nodes = new String[nodeList.size()];
-            sentinelServersConfig.addSentinelAddress(redisProperties.getSentinel().getNodes().toArray(nodes));
+            for (int i = 0; i < nodes.length; i++) {
+                nodes[i] = "redis://" + nodeList.get(i);
+            }
+            sentinelServersConfig.addSentinelAddress(nodes);
             sentinelServersConfig.setDatabase(redisProperties.getDatabase());
             if (redisProperties.getPassword() != null) {
                 sentinelServersConfig.setPassword(redisProperties.getPassword());
