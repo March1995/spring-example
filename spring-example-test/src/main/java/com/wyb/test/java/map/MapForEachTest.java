@@ -7,7 +7,7 @@ import java.util.HashMap;
 /**
  * @author Kunzite
  */
-public class MapTest {
+public class MapForEachTest {
 
     /**
      * 在Map集合中 values():方法是获取集合中的所有的值----没有键，没有对应关系， KeySet():
