@@ -17,7 +17,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * 这就使线程池实现的要点。
  */
 @Slf4j
-public class PoolThread extends Thread {
+public class Worker extends Thread {
 
     //线程的任务
     private Task task;
@@ -30,7 +30,7 @@ public class PoolThread extends Thread {
         }
     };
 
-    public PoolThread(ThreadPool pool) {
+    public Worker(ThreadPool pool) {
         this.pool = pool;
     }
 

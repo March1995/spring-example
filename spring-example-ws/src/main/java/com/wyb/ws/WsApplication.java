@@ -7,10 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author Marcher丶
  */
 @SpringBootApplication
-public class SpringExampleWsApplication {
+public class WsApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringExampleWsApplication.class, args);
+        SpringApplication.run(WsApplication.class, args);
     }
 
 }

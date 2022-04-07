@@ -3,6 +3,7 @@ package com.wyb.test.spring.cycleDependence;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.context.annotation.Lazy;
 
 /**
  * @author Marcher丶
@@ -11,7 +12,7 @@ import org.springframework.context.annotation.ImportResource;
  * setter方式比较循环依赖
  */
 @Configuration
-@ImportResource("classpath:springCycleDI.xml")
+//@ImportResource("classpath:springCycleDI.xml")
 public class CycleConfig {
 
 //    @Bean
@@ -22,22 +23,22 @@ public class CycleConfig {
 //
 //    @Bean
 //    @Lazy
-//    public CdB CdB(CdC cdC) {
-//        return new CdB(cdC);
+//    public CdB CdB(CdA cdA) {
+//        return new CdB(cdA);
 //    }
 
-//    @Bean
-//    public CdA CdA() {
-//        CdA cdA = new CdA();
-//        cdA.setCdB(CdB());
-//        return cdA;
-//    }
-//
-//    @Bean
-//    public CdB CdB() {
-//        CdB cdB = new CdB();
-//        cdB.setCdA(CdA());
-//        return cdB;
-//    }
+    @Bean
+    public CdA CdA(CdB cdB) {
+        CdA cdA = new CdA();
+        cdA.setCdB(cdB);
+        return cdA;
+    }
+
+    @Bean
+    public CdB CdB(CdA cdA) {
+        CdB cdB = new CdB();
+        cdB.setCdA(cdA);
+        return cdB;
+    }
 
 }

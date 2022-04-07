@@ -6,6 +6,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
 /**
  * @author Kunzite
  */
@@ -33,6 +36,12 @@ public class LifeCycle implements BeanNameAware, BeanFactoryAware, ApplicationCo
         System.out.println("ApplicationContext setApplicationContext方法");
     }
 
+    @PostConstruct
+    public void doPostConstruct() {
+        System.out.println("doPostConstruct");
+    }
+
+
     @Override
     public void afterPropertiesSet() throws Exception {
         System.out.println("afterPropertiesSet");
@@ -45,6 +54,11 @@ public class LifeCycle implements BeanNameAware, BeanFactoryAware, ApplicationCo
     @Override
     public void destroy() throws Exception {
         System.out.println("DisposableBean destroy方法");
+    }
+
+    @PreDestroy
+    public void doPreDestroy() {
+        System.out.println("doPreDestroy");
     }
 
     public void customDestroy() {

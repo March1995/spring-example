@@ -23,11 +23,46 @@
 
 > 参考：https://www.cnblogs.com/longshiyVip/p/5061547.html
 
-> 参考：https://github.com/Snailclimb/JavaGuide/blob/master/docs/system-design/framework/spring/spring-transaction.md
+> 参考：https://github.com/Snailclimb/JavaGuide/blob/main/docs/database/mysql/transaction-isolation-level.md
+
+### 事务的四大特性和mysql是如何保证
+
+- 原子性：
+
+事务被视为不可分割的最小单元，事务的所有操作要么全部提交成功，要么全部失败回滚。
+
+回滚可以用回滚日志（Undo Log）来实现，回滚日志记录着事务所执行的修改操作，在回滚时反向执行这些修改操作即可。
+
+
+- 一致性:
+
+数据库在事务执行前后都保持一致性状态。在一致性状态下，所有事务对同一个数据的读取结果都是相同的。
+
+- 隔离性:
+
+一个事务所做的修改在最终提交以前，对其它事务是不可见的。
+
+- 持久性:
+
+一旦事务提交，则其所做的修改将会永远保存到数据库中。即使系统发生崩溃，事务执行的结果也不能丢失。
+
+系统发生崩溃可以用重做日志（Redo Log）进行恢复，从而实现持久性。与回滚日志记录数据的逻辑修改不同，重做日志记录的是数据页的物理修改。
 
 ### 并发一致性问题（）
 
+- 脏读（Dirty read）
+
+- 丢失修改（Lost to modify)
+
+- 不可重复读（Unrepeatableread）
+
+- 幻读（Phantom read）
+
 ### 事务隔离级别（定义了一个事务可能受其他并发事务影响的程度）
+
+多版本并发控制（Multi-Version Concurrency Control, MVCC）是 MySQL 的 InnoDB 存储引擎实现隔离级别的一种具体方式，用于实现提交读和可重复读这两种隔离级别。
+而未提交读隔离级别总是读取最新的数据行，要求很低，无需使用 MVCC。
+可串行化隔离级别需要对所有读取的行都加锁，单纯使用 MVCC 无法实现。
 
 - TransactionDefinition.ISOLATION_DEFAULT=-1 ：使用后端数据库默认的隔离级别，Mysql 默认采用的 REPEATABLE_READ隔离级别 Oracle 默认采用的 READ_COMMITTED隔离级别. 
 - TransactionDefinition.ISOLATION_READ_UNCOMMITTED: 最低的隔离级别，允许读取尚未提交的数据变更，可能会导致**脏读**、**幻读**或**不可重复读**

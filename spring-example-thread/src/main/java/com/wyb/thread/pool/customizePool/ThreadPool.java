@@ -14,12 +14,12 @@ import java.util.concurrent.TimeUnit;
  * @author Kunzite
  */
 @Slf4j
-public class ThreadPool implements Pool<PoolThread> {
+public class ThreadPool implements Pool<Worker> {
 
     //默认线程池的线程数
     private static final int DEFAULT_SIZE = 5;
     //线程池中的空闲线程，用队列表示
-    private BlockingQueue<PoolThread> idleThreads;
+    private BlockingQueue<Worker> idleThreads;
     //设置线程池是否关闭的标志
     private volatile boolean isShutdown = false;
     //存放所有线程池的所有线程，不管是否在执行任务
@@ -32,7 +32,7 @@ public class ThreadPool implements Pool<PoolThread> {
     public ThreadPool(int threadSize){
         this.idleThreads = new LinkedBlockingQueue<>(threadSize);
         for(int i=0; i<threadSize; i++){
-            PoolThread thread = new PoolThread(this);
+            Worker thread = new Worker(this);
             thread.setName("ThreadPool-"+i);
             thread.start();
             idleThreads.add(thread);
@@ -48,7 +48,7 @@ public class ThreadPool implements Pool<PoolThread> {
         log.debug("threadPool all has {} thread.", threadSize);
         log.debug("closing pool........");
         for(int i=0; i<threadSize; i++){
-            PoolThread thread = borrowFromPool();
+            Worker thread = borrowFromPool();
             thread.setTask(null);
             thread.setIdleLocal(null);
             thread.close();
@@ -71,14 +71,14 @@ public class ThreadPool implements Pool<PoolThread> {
 
     @Override
     public void execute(Task task) {
-        PoolThread thread = borrowFromPool();
+        Worker thread = borrowFromPool();
         log.debug("I will set the task|{} soon...", task);
         thread.setTask(task);
     }
 
     @Override
-    public PoolThread borrowFromPool() {
-        PoolThread thread = null;
+    public Worker borrowFromPool() {
+        Worker thread = null;
         try {
             log.debug("borrow thread from pool, pool all has {} threads .", idleThreads.size());
             thread = idleThreads.take();
@@ -90,7 +90,7 @@ public class ThreadPool implements Pool<PoolThread> {
     }
 
     @Override
-    public void returnToPool(PoolThread t) {
+    public void returnToPool(Worker t) {
         try {
             log.debug("thread {} return to pool", t.getName());
             idleThreads.offer(t, 1L, TimeUnit.SECONDS);
