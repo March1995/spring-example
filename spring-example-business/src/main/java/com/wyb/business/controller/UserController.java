@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -22,7 +23,12 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/list")
-    public List<UserDo> list(){
-        return userService.listAll(1,10);
+    public List<UserDo> list() {
+        return userService.listAll(1, 10);
+    }
+
+    @GetMapping("/tx")
+    public String tx(Integer userId) throws IOException {
+        return userService.updateById(userId);
     }
 }
