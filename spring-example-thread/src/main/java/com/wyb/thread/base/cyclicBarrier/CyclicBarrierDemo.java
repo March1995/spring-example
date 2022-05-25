@@ -36,6 +36,7 @@ public class CyclicBarrierDemo {
                 }
             });
         }
+        cyclicBarrier.reset();
         threadPool.shutdown();
     }
 
