@@ -20,6 +20,13 @@ public class BaseEntity implements Serializable {
 
     protected Date updateTime;
 
+    public BaseEntity(Long id) {
+        this.id = id;
+    }
+
+    public BaseEntity() {
+    }
+
     public Long getId() {
         return id;
     }
