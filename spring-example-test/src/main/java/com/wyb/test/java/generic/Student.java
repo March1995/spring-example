@@ -3,13 +3,13 @@ package com.wyb.test.java.generic;
 /**
  * @author Kunzite
  */
-public class Student<T> extends Person {
+public class Student<T> extends Person<T> {
 
     private String className;
 
     private T description;
 
-    public Student(String sex, String name, Object des) {
+    public Student(String sex, String name, T des) {
         super(sex, name, des);
     }
 
