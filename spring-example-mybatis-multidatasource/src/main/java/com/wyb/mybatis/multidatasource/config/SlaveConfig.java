@@ -7,9 +7,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author Marcher丶
  */
 @Data
-@ConfigurationProperties(prefix = "spring.datasource.slave")// 注意这个前缀要和application.yml文件的前缀一样
+@ConfigurationProperties(prefix = "spring.datasource.slave")
 public class SlaveConfig {
-    
+
     private String url;
     private String username;
     private String password;

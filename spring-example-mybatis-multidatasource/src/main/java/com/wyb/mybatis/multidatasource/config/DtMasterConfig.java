@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author Marcher丶
  */
 @Data
-@ConfigurationProperties(prefix = "spring.datasource.master-dt") // 注意这个前缀要和application.yml文件的前缀一样
+@ConfigurationProperties(prefix = "spring.datasource.master-dt")
 public class DtMasterConfig {
 
     private String url;
