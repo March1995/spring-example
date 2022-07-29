@@ -4,11 +4,13 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
+import com.wyb.mybatis.multidatasource.config.DtMasterConfig;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.jta.atomikos.AtomikosDataSourceBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +24,7 @@ import com.wyb.mybatis.multidatasource.config.MasterConfig;
  * @author Marcher丶
  */
 @Configuration
+@EnableConfigurationProperties(MasterConfig.class)
 // basePackages 最好分开配置 如果放在同一个文件夹可能会报错
 @MapperScan(basePackages = "com.wyb.mybatis.multidatasource.dao.mapper.master", sqlSessionTemplateRef = "masterSqlSessionTemplate")
 public class MasterDbConfig {

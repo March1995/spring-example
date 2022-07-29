@@ -6,7 +6,6 @@ spring:
     master:
       #      jdbc-url,url,jdbcurl哪个合适用哪个
       url: jdbc:mysql://111.231.85.51:3306/multidatabase?characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8
-      #  下面是最新的mysql8版本推荐的驱动
       driver-class-name: com.mysql.cj.jdbc.Driver
       type: com.alibaba.druid.pool.DruidDataSource
       username: multidatabase
@@ -26,11 +25,10 @@ spring:
 
     master-dt:
       #      jdbc-url,url,jdbcurl哪个合适用哪个
-      url: jdbc:mysql://127.0.0.1:3306/springboot?chareacterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8
-      #  下面是最新的mysql8版本推荐的驱动
+      url: jdbc:mysql://111.231.85.51:3306/springboot?chareacterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8
       driver-class-name: com.mysql.cj.jdbc.Driver
       type: com.alibaba.druid.pool.DruidDataSource
-      username: root
+      username: springboot
       password: 123456
       initial-size: 1
       min-idle: 1
