@@ -31,7 +31,21 @@ public class DynamicTest {
         dynamicService.masterAddUser(user);
 
         List<UserDo> list1 = dynamicService.getListBySlave();
-        list1.forEach(userDo -> System.out.println(userDo.getUsername()));
+        for (int i = 0; i < list1.size(); i++) {
+            if (i == list1.size() -1) {
+                System.out.println(list1.get(i).getUsername());
+            }
+        }
+//        list1.stream().filter(v -> v.get)forEach(userDo -> System.out.println(userDo.getUsername()));
+
+//        List<UserDo> list2 = dynamicService.getListByMaster();
+//
+//        for (int i = 0; i < list2.size(); i++) {
+//            if (i == list2.size() -1) {
+//                System.out.println(list2.get(i).getUsername());
+//            }
+//        }
+//        list2.forEach(userDo -> System.out.println(userDo.getUsername()));
 
     }
 }

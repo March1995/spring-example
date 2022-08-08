@@ -2,7 +2,7 @@ package com.wyb.mybatis.plus.controller;
 
 
 import com.wyb.mybatis.plus.entity.User;
-import com.wyb.mybatis.plus.mapper.UserMapper;
+import com.wyb.mybatis.plus.service.IUserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,11 +23,11 @@ import javax.annotation.Resource;
 public class UserController {
 
     @Resource
-    UserMapper userMapper;
+    IUserService userService;
 
     @GetMapping("/getUser")
     @ResponseBody
     public User getUser() {
-        return userMapper.selectById(1);
+        return userService.selectById(1);
     }
 }

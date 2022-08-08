@@ -1,7 +1,7 @@
 package com.wyb.mybatis.plus.service;
 
-import com.wyb.mybatis.plus.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.wyb.mybatis.plus.entity.User;
 
 /**
  * <p>
@@ -13,4 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IUserService extends IService<User> {
 
+    User selectById(Integer id);
 }
