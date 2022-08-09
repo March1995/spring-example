@@ -29,7 +29,11 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-jdbc</artifactId>
-      <version>2.0.8.RELEASE</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mybatis.spring.boot</groupId>
+      <artifactId>mybatis-spring-boot-starter</artifactId>
     </dependency>
 
     <dependency>
@@ -40,17 +44,24 @@
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-starter-jdbc</artifactId>
         </exclusion>
+        <exclusion>
+          <groupId>org.mybatis</groupId>
+          <artifactId>mybatis-spring</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.mybatis</groupId>
+          <artifactId>mybatis</artifactId>
+        </exclusion>
       </exclusions>
       <version>3.0.6</version>
     </dependency>
 
+<!--    <dependency>-->
+<!--      <groupId>com.baomidou</groupId>-->
+<!--      <artifactId>mybatis-plus-generator</artifactId>-->
+<!--      <version>3.0.6</version>-->
+<!--    </dependency>-->
 
-
-    <dependency>
-      <groupId>com.baomidou</groupId>
-      <artifactId>mybatis-plus-generator</artifactId>
-      <version>3.0.6</version>
-    </dependency>
 
     <dependency>
       <groupId>mysql</groupId>
