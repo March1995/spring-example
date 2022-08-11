@@ -9,7 +9,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @author Marcher丶
- * @version $$ Revision: 1.0 $$, $$ Date: 2022/1/11 17:40 $$
  */
 public interface Locker {
 

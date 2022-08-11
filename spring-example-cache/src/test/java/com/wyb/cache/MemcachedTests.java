@@ -1,6 +1,6 @@
 package com.wyb.cache;
 
-import com.wyb.cache.config.MemcacheConfig;
+import com.wyb.cache.config.MemcachedConfig;
 import com.wyb.cache.service.CacheService;
 import net.spy.memcached.MemcachedClient;
 import org.junit.Test;
@@ -15,22 +15,22 @@ import javax.annotation.Resource;
 public class MemcachedTests {
 
     @Resource
-    private MemcacheConfig memcacheConfig;
+    private MemcachedConfig memcachedConfig;
     @Resource
-    private CacheService memcacheService;
+    private CacheService memcachedService;
 
 
     @Test
     public void testSetGet() {
-        MemcachedClient memcachedClient = memcacheConfig.client();
+        MemcachedClient memcachedClient = memcachedConfig.client();
         memcachedClient.set("testkey", 1000, "666666");
         System.out.println("***********  " + memcachedClient.get("testkey").toString());
     }
 
     @Test
     public void testRedisSet() {
-        memcacheService.putCache("11", "11 value");
-        System.out.println(memcacheService.getCache("11"));
+        memcachedService.putCache("11", "11 value");
+        System.out.println(memcachedService.getCache("11"));
     }
 
 }

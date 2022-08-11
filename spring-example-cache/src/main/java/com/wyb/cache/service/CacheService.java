@@ -51,7 +51,7 @@ public interface CacheService {
      *
      * @param key
      */
-    void removeCache(String key);
+    Boolean removeCache(String key);
 
     /**
      * 队列缓存设置

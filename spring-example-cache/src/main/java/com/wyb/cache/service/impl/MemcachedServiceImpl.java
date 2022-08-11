@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 @ConditionalOnBean(MemcachedClient.class)
-@Service("memcacheService")
+@Service("memcachedService")
 public class MemcachedServiceImpl implements CacheService {
 
     @Resource
@@ -47,8 +47,8 @@ public class MemcachedServiceImpl implements CacheService {
     }
 
     @Override
-    public void removeCache(String key) {
-
+    public Boolean removeCache(String key) {
+        return false;
     }
 
     @Override

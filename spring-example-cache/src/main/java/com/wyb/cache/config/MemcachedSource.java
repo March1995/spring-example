@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
  * @author Marcher
  */
 @Component
-@ConfigurationProperties(prefix = "memcache")
-public class MemcacheSource {
+@ConfigurationProperties(prefix = "memcached")
+public class MemcachedSource {
 
     private String ip;
 

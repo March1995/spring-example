@@ -1,6 +1,6 @@
 package com.wyb.cache.service.impl;
 
-import com.wyb.cache.constant.CacheKeyContant;
+import com.wyb.cache.constant.CacheKeyConstant;
 import com.wyb.cache.service.CacheService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -67,12 +67,13 @@ public class RedisServiceImpl implements CacheService {
     }
 
     @Override
-    public void removeCache(String key) {
+    public Boolean removeCache(String key) {
         try {
-            redisTemplate.delete(key);
+            return redisTemplate.delete(key);
         } catch (Exception e) {
             log.error("Remove cache exception [key=" + key + "].", e);
         }
+        return false;
     }
 
     @Override
@@ -436,7 +437,7 @@ public class RedisServiceImpl implements CacheService {
             throw new IllegalArgumentException("the cache key to be locked can not be null");
         }
         long t = System.currentTimeMillis();
-        String _lockKey = String.format("%s%s", CacheKeyContant.DS_LOCK, key);
+        String _lockKey = String.format("%s%s", CacheKeyConstant.DS_LOCK, key);
         while (true) {
             if (redisTemplate.opsForValue().setIfAbsent(_lockKey, t + lockTimeoutMS + 1)) {
                 redisTemplate.expire(_lockKey, lockTimeoutMS, TimeUnit.MILLISECONDS);
@@ -465,7 +466,7 @@ public class RedisServiceImpl implements CacheService {
 
     @Override
     public void unlock(String key) {
-        String _lockKey = String.format("%s%s", CacheKeyContant.DS_LOCK, key);
+        String _lockKey = String.format("%s%s", CacheKeyConstant.DS_LOCK, key);
         removeCache(_lockKey);
     }
 

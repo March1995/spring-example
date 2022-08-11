@@ -1,6 +1,5 @@
 package com.wyb.cache;
 
-import com.alibaba.fastjson.JSON;
 import com.google.common.hash.BloomFilter;
 import com.google.common.hash.Funnels;
 import com.wyb.cache.service.CacheService;
@@ -10,14 +9,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 

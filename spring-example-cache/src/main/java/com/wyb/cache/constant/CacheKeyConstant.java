@@ -1,12 +1,12 @@
 package com.wyb.cache.constant;
 
 /**
- * CacheKeyContant
+ * CacheKeyConstant
  *
  * @author
  * @date 15/10/2017
  */
-public class CacheKeyContant {
+public class CacheKeyConstant {
 
     /**
      * DS LOCK key

@@ -13,14 +13,14 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * Description:
+ * controller直接加入缓存
  *
  * @author: Kunzite
  * @Date: 2018-01-07 19:57
  */
 @RestController
 @RequestMapping("/user")
-public class UserController {
+public class CacheableController {
 
     @Resource
     private UserService userService;
