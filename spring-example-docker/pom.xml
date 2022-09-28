@@ -89,7 +89,7 @@
                 </executions>
                 <configuration>
                     <!--在此设置host无效  需要在环境变量值设置-->
-                    <dockerHost>http://192.168.31.128:2375</dockerHost>
+                    <dockerHost>http://111.231.85.51:2375</dockerHost>
 
                     <imageName>${docker.image.prefix}/${project.artifactId}:${project.version}-${git.commit.id.abbrev}</imageName>
                     <!--<imageTags>-->

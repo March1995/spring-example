@@ -1,4 +1,4 @@
-FROM java:8-jre
+FROM java:8
 #ENV APP_NAME @project.build.finalName@.jar   引用springboot的parent需要使用@@占位符
 #ENV APP_NAME ${project.build.finalName}.jar
 
