@@ -23,16 +23,14 @@ grant select,insert,update,delete on seckill.* to seckill@'%' Identified by 'sec
 
 CREATE DATABASE IF NOT EXISTS miaosha DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
 
-
-create DATABASE if not exists test1 collate utf8_general_ci;
-grant select,insert,update,delete on test1.* to test1@'%' Identified by '123456';
+create DATABASE if not exists springboot collate utf8_general_ci;
+grant select,insert,update,delete on springboot.* to springboot@'%' Identified by '123456';
 
 # 主从同步
 CREATE USER 'slave'@'%' IDENTIFIED BY '123456';
 GRANT REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'slave'@'%';
 
 create DATABASE if not exists multidatabase collate utf8_general_ci;
-grant select,insert,update,delete on multidatabase.* to multidatabase@'%' Identified by '123456';
 grant select,insert,update,delete on multidatabase.* to multidatabase@'%' Identified by '123456';
 # 主从同步
 
