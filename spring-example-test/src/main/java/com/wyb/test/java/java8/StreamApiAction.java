@@ -1,6 +1,12 @@
 package com.wyb.test.java.java8;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -25,6 +31,8 @@ public class StreamApiAction {
 //        filter(list);
         List<Integer> list3 = Arrays.asList(1, 2, 2, 2, 5);
 //        distinct(list3);
+        list3 = list3.stream().filter(distinctByKey(v -> v)).collect(Collectors.toList());
+        list3.forEach(System.out::println);
 //        sorted(list);
 //        peek(list);
 //        limit(list);
@@ -46,7 +54,9 @@ public class StreamApiAction {
     }
 
     private static void flatMap(List<List<Integer>> list) {
-        list.stream().flatMap(v -> v.stream()).forEach(System.out::println);
+        list.stream()
+                .flatMap(Collection::stream)
+                .forEach(System.out::println);
     }
 
     private static void filter(List<Integer> list) {
@@ -56,6 +66,12 @@ public class StreamApiAction {
     private static void distinct(List<Integer> list) {
         list.stream().distinct().forEach(System.out::println);
     }
+
+    private static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
+        ConcurrentHashMap<Object, Boolean> map = new ConcurrentHashMap<>();
+        return t -> map.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
+    }
+
 
     private static void sorted(List<Integer> list) {
         System.out.println("从小到大");
