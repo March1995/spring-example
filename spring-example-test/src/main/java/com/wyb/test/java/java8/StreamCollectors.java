@@ -68,6 +68,18 @@ public class StreamCollectors {
              System.out.println("key= " + entry.getKey() + " and value= " + entry.getValue().get());
         }
 
+        // map filter by key
+        Map<String, Optional<Person>> filterByKeyMap = tallestByCity
+                .entrySet()
+                .stream()
+                .filter(entry -> !"杭州".equals(entry.getKey()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        // map filter by value
+        Map<String, Optional<Person>> filterByValueMap = tallestByCity
+                .entrySet()
+                .stream()
+                .filter(entry -> entry.getValue().get().getHeight() > 1.7)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         // identity为基准
         Person identity= new Person();
