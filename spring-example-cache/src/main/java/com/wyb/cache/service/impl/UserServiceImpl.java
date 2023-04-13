@@ -1,15 +1,15 @@
 package com.wyb.cache.service.impl;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
-
 import com.github.pagehelper.PageHelper;
 import com.wyb.cache.dao.mapper.UserDoMapper;
 import com.wyb.cache.dao.model.UserDo;
 import com.wyb.cache.service.UserService;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Description:
@@ -32,6 +32,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDo getById(Integer id) {
         return userDoMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    @Cacheable(value = "user", key = "#ids")
+    public List<UserDo> getByIds(List<Integer> ids) {
+        Example example = new Example(UserDo.class);
+        example.createCriteria().andIn("id", ids);
+        return userDoMapper.selectByExample(example);
     }
 
     @Override
