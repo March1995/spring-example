@@ -45,6 +45,7 @@ public class StreamCollectors {
         mapBoolean.keySet().forEach(v -> mapBoolean.get(v).forEach(System.out::println));
 
         Optional<String> min = strList.stream().collect(Collectors.minBy(Comparator.comparingInt(String::length)));
+        Optional<String> simpleMin = strList.stream().min(Comparator.comparingInt(String::length));
         System.out.println(min);
 
         DoubleSummaryStatistics doubleSummaryStatistics = strList.stream()
